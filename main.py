@@ -13,6 +13,8 @@ class MainFrame(wx.Frame):
         self.labelPort = wx.StaticText(self.panel, label="Port", pos=(160, 20), size=(60, 20))
         self.textIp = wx.TextCtrl(self.panel, value="127.0.0.1", pos=(20, 40), size=(120, 20))
         self.textPort = wx.TextCtrl(self.panel, value="5326", pos=(160, 40), size=(60, 20))
+        self.textIp.Enable(True)
+        self.textPort.Enable(True)
 
         # UI line 2
 
@@ -22,37 +24,80 @@ class MainFrame(wx.Frame):
         self.textHouse = wx.TextCtrl(self.panel, value="10", pos=(20, 100), size=(60, 20))
         self.textWorker = wx.TextCtrl(self.panel, value="4", pos=(90, 100), size=(60, 20))
         self.textTerminal = wx.TextCtrl(self.panel, value="10", pos=(160, 100), size=(60, 20))
+        self.textHouse.Enable(True)
+        self.textWorker.Enable(True)
+        self.textTerminal.Enable(True)
 
-#        self.butCreate = wx.Button(self.panel, label="create", pos=(20, 80), size=(55, 20))
-#        self.butDrop = wx.Button(self.panel, label="drop", pos=(85, 80), size=(55, 20))
+        # UI line 3
+
+        self.butLock = wx.Button(self.panel, label="Lock", pos=(20, 140), size=(60, 20))
+        self.butLoad = wx.Button(self.panel, label="Load", pos=(90, 140), size=(60, 20))
+        self.butRun = wx.Button(self.panel, label="Run", pos=(160, 140), size=(60, 20))
+        self.butLock.Enable(True)
+        self.butLoad.Enable(False)
+        self.butRun.Enable(False)
+
         self.textLog = wx.TextCtrl(self.panel, pos=(240, 20), size=(210, 200), style=wx.TE_MULTILINE)
 
-        self.strIp = ""
-        self.strPort = ""
+        self.ip = "127.0.0.1"
+        self.port = 5326
+        self.house = 10
+        self.worker = 4
+        self.terminal = 10
+        self.lockStatus = False
         self.logInfo = []
 
-#        self.Bind(wx.EVT_BUTTON, self.createTable, self.butCreate)
-#        self.Bind(wx.EVT_BUTTON, self.dropTable, self.butDrop)
+        self.Bind(wx.EVT_BUTTON, self.lock, self.butLock)
+        self.Bind(wx.EVT_BUTTON, self.loadData, self.butLoad)
+        self.Bind(wx.EVT_BUTTON, self.runBench, self.butRun)
 
     def log(self, strLog):
         nowTime = datetime.datetime.now().strftime("%H:%M:%S")
-        self.logInfo.append(nowTime + ": " + strLog)
+        self.logInfo.append(nowTime + ":" + strLog)
         strTmp = "\r\n".join(self.logInfo)
         self.textLog.SetValue(strTmp)
 
-    def refresh(self):
-        self.strIp = self.textIp.GetValue()
-        self.strPort = self.textPort.GetValue()
+    def setLock(self, flag):
+        self.lockStatus = not flag
+        self.textIp.Enable(flag)
+        self.textPort.Enable(flag)
+        self.textHouse.Enable(flag)
+        self.textWorker.Enable(flag)
+        self.textTerminal.Enable(flag)
+        self.butLoad.Enable(not flag)
+        self.butRun.Enable(not flag)
 
-    def createTable(self, event):
-        self.refresh()
-        strTmp = "create: " + self.strIp + ":" + self.strPort
-        self.log(strTmp)
+    def setLockBut(self, flag):
+        self.butLock.Enable(flag)
+        self.butLoad.Enable(flag)
+        self.butRun.Enable(flag)
 
-    def dropTable(self, event):
-        self.refresh()
-        strTmp = "drop: " + self.strIp + ":" + self.strPort
-        self.log(strTmp)
+    def lock(self, event):
+        if self.lockStatus:
+            self.setLock(True)
+            self.butLock.SetLabel("Lock")
+        else:
+            self.ip = self.textIp.GetValue()
+            self.port = int(self.textPort.GetValue())
+            self.house = int(self.textHouse.GetValue())
+            self.worker = int(self.textWorker.GetValue())
+            self.terminal = int(self.textTerminal.GetValue())
+            strTmp = "Locked,Database:" + self.ip + ":" + str(self.port) + ",Warehouse:" + str(self.house) + ",LoadWorker:" + str(self.worker) + ",Terminal:" + str(self.terminal)
+            self.log(strTmp)
+            self.setLock(False)
+            self.butLock.SetLabel("Unlock")
+
+    def loadData(self, event):
+        self.log("load data!")
+        self.setLockBut(False)
+        self.setLockBut(True)
+        self.log("load finish!")
+
+    def runBench(self, event):
+        self.log("run bench!")
+        self.setLockBut(False)
+        self.setLockBut(True)
+        self.log("run finish!")
 
 
 class App(wx.App):
