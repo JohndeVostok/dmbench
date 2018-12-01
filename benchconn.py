@@ -15,8 +15,8 @@ def genprop(addr, user, password, house, worker, term, time):
 		f.write(tmp)
 
 def load():
-	os.system("./runDatabaseDestroy.sh tmp.prop")
-	os.system("./runDatabaseBuild.sh tmp.prop")
+	os.system("./runDatabaseDestroy tmp.prop")
+	os.system("./runDatabaseBuild tmp.prop")
 
 def run():
 	os.system("./runBenchmark.sh tmp.prop > tmp.res")
