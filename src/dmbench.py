@@ -106,7 +106,8 @@ class MainFrame(wx.Frame):
     def runBench(self, event):
         self.log("run bench!")
         self.setLockBut(False)
-        benchconn.run()
+        s = benchconn.run()
+        self.log(s)
         self.setLockBut(True)
         self.log("run finish!")
 
