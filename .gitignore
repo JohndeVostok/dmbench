@@ -2,4 +2,7 @@ __pycache__
 build
 dist
 *~
-
+*.pyc
+run/tmp.res
+run/tmp.prop
+run/dmbench

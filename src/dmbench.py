@@ -99,8 +99,9 @@ class MainFrame(wx.Frame):
     def loadData(self, event):
         self.log("load data!")
         self.setLockBut(False)
-        benchconn.load()
-        self.setLockBut(True)
+        s = benchconn.load()
+        self.log(s)
+	self.setLockBut(True)
         self.log("load finish!")
 
     def runBench(self, event):
