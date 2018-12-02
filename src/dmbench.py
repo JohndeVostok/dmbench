@@ -6,7 +6,7 @@ import benchconn
 class MainFrame(wx.Frame):
     def __init__(self, parent, *args, **kwargs):
         super(MainFrame, self).__init__(parent, *args, **kwargs)
-        self.font = wx.Font(pointSize=28)
+        self.font = wx.Font(pointSize=24)
         self.panel = wx.Panel(self)
         self.panel.SetFont(self.font)
 
