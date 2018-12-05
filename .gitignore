@@ -4,3 +4,7 @@ dist
 *~
 *.png
 *.pdf
+*.pyc
+run/tmp.res
+run/tmp.prop
+run/dmbench
