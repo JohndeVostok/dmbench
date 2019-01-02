@@ -55,7 +55,7 @@ public class jTPCC implements jTPCCConfig
     private String getProp (Properties p, String pName)
     {
 	String prop =  p.getProperty(pName);
-	log.info("Term-00, " + pName + "=" + prop);
+	//log.info("Term-00, " + pName + "=" + prop);
 	return(prop);
     }
 
@@ -64,7 +64,7 @@ public class jTPCC implements jTPCCConfig
 	String prop =  p.getProperty(pName);
 	if (prop == null)
 	    prop = defVal;
-	log.info("Term-00, " + pName + "=" + prop);
+	//log.info("Term-00, " + pName + "=" + prop);
 	return(prop);
     }
 
@@ -79,38 +79,38 @@ public class jTPCC implements jTPCCConfig
 	  errorMessage("Term-00, could not load properties file");
 	}
 
-	log.info("Term-00, ");
-	log.info("Term-00, +-------------------------------------------------------------+");
-	log.info("Term-00,      BenchmarkSQL v" + JTPCCVERSION);
-	log.info("Term-00, +-------------------------------------------------------------+");
-	log.info("Term-00,  (c) 2003, Raul Barbosa");
-	log.info("Term-00,  (c) 2004-2016, Denis Lussier");
-	log.info("Term-00,  (c) 2016, Jan Wieck");
-	log.info("Term-00, +-------------------------------------------------------------+");
-	log.info("Term-00, ");
+	//log.info("Term-00, ");
+	//log.info("Term-00, +-------------------------------------------------------------+");
+	//log.info("Term-00,      BenchmarkSQL v" + JTPCCVERSION);
+	//log.info("Term-00, +-------------------------------------------------------------+");
+	//log.info("Term-00,  (c) 2003, Raul Barbosa");
+	//log.info("Term-00,  (c) 2004-2016, Denis Lussier");
+	//log.info("Term-00,  (c) 2016, Jan Wieck");
+	//log.info("Term-00, +-------------------------------------------------------------+");
+	//log.info("Term-00, ");
 	String  iDB                 = getProp(ini,"db");
 	String  iDriver             = getProp(ini,"driver");
 	String  iConn               = getProp(ini,"conn");
 	String  iUser               = getProp(ini,"user");
 	String  iPassword           = ini.getProperty("password");
 
-	log.info("Term-00, ");
+	//log.info("Term-00, ");
 	String  iWarehouses         = getProp(ini,"warehouses");
 	String  iTerminals          = getProp(ini,"terminals");
 
 	String  iRunTxnsPerTerminal =  ini.getProperty("runTxnsPerTerminal");
 	String iRunMins  =  ini.getProperty("runMins");
 	if (Integer.parseInt(iRunTxnsPerTerminal) ==0 && Integer.parseInt(iRunMins)!=0){
-	    log.info("Term-00, runMins" + "=" + iRunMins);
+	    //log.info("Term-00, runMins" + "=" + iRunMins);
 	}else if(Integer.parseInt(iRunTxnsPerTerminal) !=0 && Integer.parseInt(iRunMins)==0){
-	    log.info("Term-00, runTxnsPerTerminal" + "=" + iRunTxnsPerTerminal);
+	    //log.info("Term-00, runTxnsPerTerminal" + "=" + iRunTxnsPerTerminal);
 	}else{
 	    errorMessage("Term-00, Must indicate either transactions per terminal or number of run minutes!");
 	};
 	String  limPerMin           = getProp(ini,"limitTxnsPerMin");
 	String  iTermWhseFixed      = getProp(ini,"terminalWarehouseFixed");
 	String  iUseStoredProcs     = getProp(ini,"useStoredProcedures");
-	log.info("Term-00, ");
+	//log.info("Term-00, ");
 
 	String  iNewOrderWeight     = getProp(ini,"newOrderWeight", "43.47826");
 	String  iPaymentWeight      = getProp(ini,"paymentWeight", "43.47826");
@@ -118,11 +118,11 @@ public class jTPCC implements jTPCCConfig
 	String  iDeliveryWeight     = getProp(ini,"deliveryWeight", "4.347826");
 	String  iStockLevelWeight   = getProp(ini,"stockLevelWeight", "4.347827");
 
-	log.info("Term-00, ");
+	//log.info("Term-00, ");
 	String  resultDirectory     = getProp(ini, "resultDirectory");
 	String	osCollectorScript   = getProp(ini, "osCollectorScript");
 
-	log.info("Term-00, ");
+	//log.info("Term-00, ");
 
 	if (iDB.equals("firebird"))
 	    dbType = DB_FIREBIRD;
@@ -220,8 +220,7 @@ public class jTPCC implements jTPCCConfig
 		log.error(e.getMessage());
 		System.exit(1);
 	    }
-	    log.info("Term-00, copied " + System.getProperty("prop") +
-		     " to " + new File(resultDir, "run.properties").getPath());
+	    //log.info("Term-00, copied " + System.getProperty("prop") + " to " + new File(resultDir, "run.properties").getPath());
 
 	    // Create the runInfo.csv file.
 	    String runInfoCSVName = new File(resultDataDir, "runInfo.csv").getPath();
@@ -240,8 +239,7 @@ public class jTPCC implements jTPCCConfig
 		log.error(e.getMessage());
 		System.exit(1);
 	    }
-	    log.info("Term-00, created " + runInfoCSVName + " for runID " +
-		     runID);
+	    //log.info("Term-00, created " + runInfoCSVName + " for runID " + runID);
 
 	    // Open the per transaction result.csv file.
 	    String resultCSVName = new File(resultDataDir, "result.csv").getPath();
@@ -256,8 +254,7 @@ public class jTPCC implements jTPCCConfig
 		log.error(e.getMessage());
 		System.exit(1);
 	    }
-	    log.info("Term-00, writing per transaction results to " +
-		     resultCSVName);
+	    //log.info("Term-00, writing per transaction results to " + resultCSVName);
 
 	    if (osCollectorScript != null)
 	    {
@@ -269,7 +266,7 @@ public class jTPCC implements jTPCCConfig
 				resultDataDir, log);
 	    }
 
-	    log.info("Term-00,");
+	    //log.info("Term-00,");
 	}
 
 	if(databaseDriverLoaded)
@@ -330,9 +327,9 @@ public class jTPCC implements jTPCCConfig
 		    throw e;
 		}
 		this.rnd = new jTPCCRandom(CLoad);
-		log.info("Term-00, C value for C_LAST during load: " + CLoad);
-		log.info("Term-00, C value for C_LAST this run:    " + rnd.getNURandCLast());
-		log.info("Term-00, ");
+		//log.info("Term-00, C value for C_LAST during load: " + CLoad);
+		//log.info("Term-00, C value for C_LAST this run:    " + rnd.getNURandCLast());
+		//log.info("Term-00, ");
 
 		fastNewOrderCounter = 0;
 		updateStatusLine();
@@ -698,21 +695,23 @@ public class jTPCC implements jTPCCConfig
 
     private void endReport()
     {
-	long currTimeMillis = System.currentTimeMillis();
-	long freeMem = Runtime.getRuntime().freeMemory() / (1024*1024);
-	long totalMem = Runtime.getRuntime().totalMemory() / (1024*1024);
-	double tpmC = (6000000*fastNewOrderCounter/(currTimeMillis - sessionStartTimestamp))/100.0;
-	double tpmTotal = (6000000*transactionCount/(currTimeMillis - sessionStartTimestamp))/100.0;
+		long currTimeMillis = System.currentTimeMillis();
+		long freeMem = Runtime.getRuntime().freeMemory() / (1024*1024);
+		long totalMem = Runtime.getRuntime().totalMemory() / (1024*1024);
+		double tpmC = (6000000*fastNewOrderCounter/(currTimeMillis - sessionStartTimestamp))/100.0;
+		double tpmTotal = (6000000*transactionCount/(currTimeMillis - sessionStartTimestamp))/100.0;
 
-	System.out.println("");
-	log.info("Term-00, ");
-	log.info("Term-00, ");
-	log.info("Term-00, Measured tpmC (NewOrders) = " + tpmC);
-	log.info("Term-00, Measured tpmTOTAL = " + tpmTotal);
-	log.info("Term-00, Session Start     = " + sessionStart );
-	log.info("Term-00, Session End       = " + sessionEnd);
-	log.info("Term-00, Transaction Count = " + (transactionCount-1));
-
+		System.out.println("report:");
+	//log.info("Term-00, ");
+	//log.info("Term-00, ");
+	//log.info("Term-00, Measured tpmC (NewOrders) = " + tpmC);
+	//log.info("Term-00, Measured tpmTOTAL = " + tpmTotal);
+	//log.info("Term-00, Session Start     = " + sessionStart );
+	//log.info("Term-00, Session End       = " + sessionEnd);
+	//log.info("Term-00, Transaction Count = " + (transactionCount-1));
+		System.out.println("tpmC(New Orders) = " + tpmC);
+		System.out.println("tpmTOTAL = " + tpmTotal);
+		System.out.println("Transaction Count = " + (transactionCount-1));
     }
 
     private void printMessage(String message)
@@ -754,21 +753,21 @@ public class jTPCC implements jTPCCConfig
 
 	    sessionNextTimestamp += 1000;  /* update this every seconds */
 
-	    fmt.format("Term-00, Running Average tpmTOTAL: %.2f", tpmTotal);
+	    fmt.format("Cur: tpmA: %.2f; ", tpmTotal);
 
 	    /* XXX What is the meaning of these numbers? */
 	    recentTpmC = (fastNewOrderCounter - sessionNextKounter) * 12;
 	    recentTpmTotal= (transactionCount-sessionNextKounter)*12;
 	    sessionNextKounter = fastNewOrderCounter;
-	    fmt.format("    Current tpmTOTAL: %d", recentTpmTotal);
+	    fmt.format("tpmT: %d; ", recentTpmTotal);
 
 	    long freeMem = Runtime.getRuntime().freeMemory() / (1024*1024);
 	    long totalMem = Runtime.getRuntime().totalMemory() / (1024*1024);
-	    fmt.format("    Memory Usage: %dMB / %dMB          ", (totalMem - freeMem), totalMem);
+	    fmt.format("Mem: %dMB / %dMB\n", (totalMem - freeMem), totalMem);
 
 	    System.out.print(informativeText);
-	    for (int count = 0; count < informativeText.length(); count++)
-		System.out.print("\b");
+	    //for (int count = 0; count < informativeText.length(); count++)
+		//System.out.print("\b");
 	}
     }
 
