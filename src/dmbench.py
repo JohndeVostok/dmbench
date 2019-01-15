@@ -95,10 +95,15 @@ class MainFrame(wx.Frame):
 
     def actRun(self, event):
         self.setLock(False)
-        for i in range(2 * self.TIMESTACK):
-            self.addValue(random.randint(1, 1000))
-            time.sleep(0.001)
-        self.textLog.SetValue("run")
+
+        cmd = "./runBenchmark.sh dm.prop"
+        p = sp.Popen(cmd, bufsize=0, stdout=sp.PIPE, universal_newlines=True, shell=True)
+        while True:
+            l = p.stdout.readline()
+            print(l.strip())
+            if l == "":
+                break
+        self.textLog.SetValue("run done")
         self.setLock(True)
 
 #        self.labelAddr = wx.StaticText(self.panel, label="Database Address", pos=(40, 40), size=(400, 40))
@@ -197,6 +202,7 @@ class MainFrame(wx.Frame):
         self.setLockBut(True)
         self.log("run finish!")
 '''
+
 
 class App(wx.App):
     def OnInit(self):
