@@ -19,7 +19,6 @@ BEFORE_LOAD="tableCreates extraCommandsBeforeLoad storedProcedureCreates"
 AFTER_LOAD="indexCreates foreignKeys extraHistID buildFinish"
 
 for step in ${BEFORE_LOAD} ; do
-    echo "@@@@@@@"
     ./runSQL.sh "${PROPS}" $step
 done
 
@@ -28,3 +27,5 @@ done
 for step in ${AFTER_LOAD} ; do
     ./runSQL.sh "${PROPS}" $step
 done
+
+echo "load finished."

@@ -32,7 +32,7 @@ class SettingFrame(wx.Frame):
         self.labelHouse = wx.StaticText(self.panel, label="WareHouse", pos=(40, 200), size=(180, 40))
         self.labelWorker = wx.StaticText(self.panel, label="LoadWorker", pos=(240, 200), size=(180, 40))
         self.textHouse = wx.TextCtrl(self.panel, value=self.data["warehouses"], pos=(40, 240), size=(180, 40))
-        self.textWorker = wx.TextCtrl(self.panel, value="loadWorkers", pos=(240, 240), size=(180, 40))
+        self.textWorker = wx.TextCtrl(self.panel, value=self.data["loadWorkers"], pos=(240, 240), size=(180, 40))
         self.labelTerminal = wx.StaticText(self.panel, label="Terminal", pos=(40, 280), size=(180, 40))
         self.labelTime = wx.StaticText(self.panel, label="RunTime", pos=(240, 280), size=(180, 40))
         self.textTerminal = wx.TextCtrl(self.panel, value=self.data["terminals"], pos=(40, 320), size=(180, 40))
@@ -43,6 +43,8 @@ class SettingFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.actCancel, self.butCancel)
 
     def actSave(self, event):
+        prams = ["db", "driver", "conn", "user", "password", "warehouses", "loadWorkers", "terminals", "runTxnsPerTerminal", "runMins", "limitTxnsPerMin", "terminalWarehouseFixed", "useStoredProcedures", "newOrderWeight", "paymentWeight", "orderStatusWeight", "deliveryWeight", "stockLevelWeight"]
+
         self.data["conn"] = self.textAddr.GetValue()
         self.data["user"] = self.textUser.GetValue()
         self.data["password"] = self.textPass.GetValue()
@@ -52,7 +54,7 @@ class SettingFrame(wx.Frame):
         self.data["runMins"] = self.textTime.GetValue()
 
         with open("tmp.prop", "w") as f:
-            f.writelines([k + "=" + v + "\n" for k, v in self.data.items()])
+            f.writelines([k + "=" + self.data[k] + "\n" for k in prams])
 
         self.Destroy()
 
@@ -90,7 +92,7 @@ class MainFrame(wx.Frame):
 
     def addLog(self, logStr):
         self.logData.append(logStr)
-        self.textLog.SetValidator("\n".join(self.logData))
+        self.textLog.SetValue("\n".join(self.logData))
 
     def addValue(self, val):
         self.queVal.append(val)
@@ -111,10 +113,10 @@ class MainFrame(wx.Frame):
         settingFrame.Show(True)
 
     def actLoad(self, event):
-        os.system("./runDatabaseDestroy tmp.prop")
+        os.system("./runDatabaseDestroy.sh tmp.prop")
         self.addLog("Data destroyed.")
-        os.system("./runDatabaseBuild tmp.prop")
-        self.textLog.SetValue("Data loaded.")
+        os.system("./runDatabaseBuild.sh tmp.prop")
+        self.addLog("Data loaded.")
 
     def actRun(self, event):
         self.setLock(False)
@@ -132,7 +134,6 @@ class MainFrame(wx.Frame):
                     self.addLog(line)
             if line == "":
                 break
-        self.textLog.SetValue("run done")
         self.setLock(True)
 
 
