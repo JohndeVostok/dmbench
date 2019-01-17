@@ -8,3 +8,6 @@ dist
 run/tmp.res
 run/tmp.prop
 run/dmbench
+src/.jTPCC_run_seq.dat
+run/benchmarksql-error.log
+

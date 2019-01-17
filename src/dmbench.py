@@ -4,6 +4,7 @@ import benchconn
 import time
 import threading
 import random
+import subprocess as sp
 import wx.lib.plot as plot
 
 
@@ -100,8 +101,10 @@ class MainFrame(wx.Frame):
         p = sp.Popen(cmd, bufsize=0, stdout=sp.PIPE, universal_newlines=True, shell=True)
         while True:
             l = p.stdout.readline()
-            print(l.strip())
-            if l == "":
+            if (l != ""):
+                val = float(l.strip().split(";")[0].split(":")[2]) 
+                self.addValue(val)
+            if l == "done":
                 break
         self.textLog.SetValue("run done")
         self.setLock(True)
