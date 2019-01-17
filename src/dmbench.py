@@ -86,6 +86,12 @@ class MainFrame(wx.Frame):
         self.TIMESTACK = 200
         self.queVal = [0 for i in range(self.TIMESTACK)]
 
+        self.logData = []
+
+    def addLog(self, logStr):
+        self.logData.append(logStr)
+        self.textLog.SetValidator("\n".join(self.logData))
+
     def addValue(self, val):
         self.queVal.append(val)
         del self.queVal[0]
@@ -103,13 +109,12 @@ class MainFrame(wx.Frame):
     def actSet(self, event):
         settingFrame = SettingFrame(self)
         settingFrame.Show(True)
-        self.textLog.SetValue("set")
 
     def actLoad(self, event):
         os.system("./runDatabaseDestroy tmp.prop")
-		
+        self.addLog("Data destroyed.")
         os.system("./runDatabaseBuild tmp.prop")
-        self.textLog.SetValue("load")
+        self.textLog.SetValue("Data loaded.")
 
     def actRun(self, event):
         self.setLock(False)
@@ -124,7 +129,7 @@ class MainFrame(wx.Frame):
                     val = float(line.split(";")[0].split(":")[2])
                     self.addValue(val)
                 else:
-                    print(line)
+                    self.addLog(line)
             if line == "":
                 break
         self.textLog.SetValue("run done")
