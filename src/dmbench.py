@@ -111,13 +111,16 @@ class MainFrame(wx.Frame):
     def actRun(self, event):
         self.setLock(False)
 
-        cmd = "./runBenchmark.sh dm.prop"
+        cmd = "./runBenchmark.sh tmp.prop"
         p = sp.Popen(cmd, bufsize=0, stdout=sp.PIPE, universal_newlines=True, shell=True)
         while True:
             l = p.stdout.readline()
             if (l != ""):
-                val = float(l.strip().split(";")[0].split(":")[2]) 
-                self.addValue(val)
+                try:
+                    val = float(l.strip().split(";")[0].split(":")[2]) 
+                    self.addValue(val)
+                except e:
+                    print(e)
             if l == "done":
                 break
         self.textLog.SetValue("run done")
