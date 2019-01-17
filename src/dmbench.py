@@ -16,13 +16,12 @@ class SettingFrame(wx.Frame):
         self.panel.SetFont(self.font)
 
         self.data = {}
-        with open("tmp.prop") as f:
-        	lines = f.readlines()
-        	for line in lines:
-        	    if line.find("=") != -1:
-            		tmp = line.strip().split("=")
-#            		print(line, tmp)
-            		self.data[tmp[0]] = tmp[1]
+        with open("tmp.prop", "r") as f:
+            lines = f.readlines()
+            for line in lines:
+                if line.find("=") != -1:
+                    tmp = line.strip().split("=")
+                    self.data[tmp[0]] = tmp[1]
 
         self.labelAddr = wx.StaticText(self.panel, label="Database Address", pos=(40, 40), size=(380, 40))
         self.textAddr = wx.TextCtrl(self.panel, value=self.data["conn"], pos=(40, 80), size=(380, 40))
@@ -44,8 +43,17 @@ class SettingFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.actCancel, self.butCancel)
 
     def actSave(self, event):
-        self.data["conn"] = self.textAddr.Value()
-        self.data["user"] = self.text
+        self.data["conn"] = self.textAddr.GetValue()
+        self.data["user"] = self.textUser.GetValue()
+        self.data["password"] = self.textPass.GetValue()
+        self.data["warehouses"] = self.textHouse.GetValue()
+        self.data["loadWorkers"] = self.textWorker.GetValue()
+        self.data["terminals"] = self.textTerminal.GetValue()
+        self.data["runMins"] = self.textTime.GetValue()
+
+        with open("tmp.prop", "w") as f:
+            f.writelines([k + "=" + v + "\n" for k, v in self.data.items()])
+
         self.Destroy()
 
     def actCancel(self, event):
