@@ -106,6 +106,9 @@ class MainFrame(wx.Frame):
         self.textLog.SetValue("set")
 
     def actLoad(self, event):
+        os.system("./runDatabaseDestroy tmp.prop")
+		
+        os.system("./runDatabaseBuild tmp.prop")
         self.textLog.SetValue("load")
 
     def actRun(self, event):
@@ -117,7 +120,7 @@ class MainFrame(wx.Frame):
             line = p.stdout.readline().strip()
             if (line != ""):
                 cnt = len(line.split(";"))
-                if (len == 2):
+                if (cnt > 1):
                     val = float(line.split(";")[0].split(":")[2])
                     self.addValue(val)
                 else:
